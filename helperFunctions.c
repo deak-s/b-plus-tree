@@ -126,22 +126,28 @@ Node *grabRight(Node *theNode){
         int middle = (floor(n/2));
 
         //copy keys over
-        memmove(&rightNode->keys[0], &theNode->keys[middle], ((n - (floor(n/2))) * sizeof(void *)));
+        memmove(&rightNode->keys[(int)(floor(n / 2))], &theNode->keys[middle], ((n - (floor(n/2))) * sizeof(void *)));
 
         //copy datas over
-        memmove(&rightNode->data[0], &theNode->data[middle], ((n - middle) * sizeof(void *)));
+        memmove(&rightNode->data[(int)(floor(n / 2))], &theNode->data[middle], ((n - middle) * sizeof(void *)));
         rightNode->numberOfKeys = (n - floor(n/2));
     }
 
     else{
+        printf("grabbing right of middle\n");
+
         Node *rightNode = createMidNode(theNode->degree);
         rightNode->myTree = theNode->myTree;
         int n = theNode->numberOfKeys;
         int middle = floor(n/2);
 
-        memmove(&rightNode->keys[0], &theNode[middle + 1], ((n - middle) * sizeof(void *)));
+        printf("n = %d ", n);
 
-       memmove(&rightNode->children[0], &theNode[middle + 1], (n - floor(n / 2)) * sizeof(void *));
+        memmove(&rightNode->keys[(int)(floor (n/2) + 1)], &theNode[middle + 1], ((n - (middle + 1)) * sizeof(void *)));
+
+        memmove(&rightNode->children[(int)(floor (n/2) + 1)], &theNode[middle + 1], (n - floor(n / 2)) * sizeof(void *));
+
+
 
     }
     return rightNode;
