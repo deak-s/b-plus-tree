@@ -38,5 +38,11 @@ Node *grabRight(Node *);
 void *grabMiddle(Node *);
 
 void destroyNode(Node *);
+
+/* checks if a node has passed capacity (and therefore must split)
+ * @param node pointer to node to check
+ * @return bool true if node is full, false otherwise
+ **/
+bool isFull(Node *);
 #endif
 

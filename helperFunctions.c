@@ -170,3 +170,14 @@ void destroyNode(Node *theNode){
     }
 }
 
+
+bool isFull(Node * theNode){
+    if(theNode->numberOfKeys == theNode->degree){
+        printf("node full!\n");
+        return true;
+    }
+    
+    else{
+        return false;
+    }
+}

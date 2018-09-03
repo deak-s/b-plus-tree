@@ -64,20 +64,19 @@ BTree *createBTree(int degree,
 //
 Node *insert(Node *root, void *key, void *data){
 
-    //find leaf()
-
-    //case:  leaf not full insertToLeaf()
-    if(root->numberOfKeys < (root->degree - 1)){
-        insertToLeaf(root, key, data);
-        return NULL;
+    //if root is not leaf - go to leaf
+    if(root->leaf == false){
+        root = findLeaf(root, key);
     }
 
-    //case:  leaf full, need to split
-    else{
-        return NULL;
+    //insert data to leaf
+    root = insertToLeaf(root, key, data);
+
+    while(isFull(root)){
+        root = splitNode(root);
     }
 
-
+    return root;
 }
 
 Node * insertToLeaf(Node *theLeaf, void *key, void *data){
@@ -88,10 +87,6 @@ Node * insertToLeaf(Node *theLeaf, void *key, void *data){
     theLeaf->numberOfKeys++;
     printf("leaf now has %d\n", theLeaf->numberOfKeys);
     printf("leaf degree is %d\n", theLeaf->degree);
-        if(theLeaf->numberOfKeys == theLeaf->degree){
-            printf("leaf 2 full :(\n");
-            splitNode(theLeaf);
-      }
     return theLeaf;
 }
 
@@ -111,14 +106,6 @@ Node *insertToMiddle(Node *theMiddle, void *key, Node *leftChild, Node *rightChi
     printf("break 4\n");
 
     theMiddle->numberOfKeys +=1;
-
-    //if full, call split
-   if(theMiddle->numberOfKeys == theMiddle->degree){
-       printf("middle 2 full :( \n");
-        //split node
-       // theMiddle = splitNode(theMiddle);
-        //insert above
-    }
     return theMiddle;
 }
 
@@ -130,11 +117,9 @@ Node *insertAbove(Node *theNode, void *key, Node *leftChild, Node *rightChild){
         upperNode = createMidNode(theNode->degree);
         upperNode->myTree = theNode->myTree;
     }
-
     else{
         upperNode = theNode->parent;
     }
-    
 
     //at this point upperNode should definitely exist
     leftChild->parent = upperNode;
@@ -147,7 +132,6 @@ Node *insertAbove(Node *theNode, void *key, Node *leftChild, Node *rightChild){
 
 //splits node and calls insertAbove to add keys/children to parent node
 Node *splitNode(Node *theNode){
-
     
     printf("splitting node\n");
     Node *newRoot = insertAbove(theNode, grabMiddle(theNode), grabLeft(theNode), grabRight(theNode));
@@ -161,7 +145,6 @@ Node *findLeaf(Node *root, void *key){
     if(root->leaf){
         return root;
     }
-
     else{
         int pos = sortedArrayPos(key, root->keys, root->myTree->compare);
         root = findLeaf(root->children[pos], key);
