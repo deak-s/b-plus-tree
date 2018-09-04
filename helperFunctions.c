@@ -14,14 +14,27 @@
 #include "btree.h"
 #include "helperFunctions.h"
 
-int sortedArrayPos(void *data, void* array[], int (*compare)(void *data1, void *data2)){
+int sortedArrayPos(void *data, void* array[], int arraySize, int (*compare)(void *data1, void *data2)){
     int x = 0;
-    for(x ; array[x] != NULL; x++){
+
+   //case element is smallest in array
+   if (array[x] == NULL){
+       printf("array 0 is null\n");
+       return x;
+   }
+
+    if(compare(data, array[x]) == -1 ){
+        printf("array smaller than element 0\n");
+        return x;
+    }
+
+    for(x ; x < arraySize; x++){
         //if data < pos and data > pos-1 
         if((compare(data, array[x]) == -1) && (compare(data, array[x-1]) == 1)){
-            break;
+            //break;
+            return x;
         }
-    }
+     }
     return x;
 }
 
@@ -102,14 +115,17 @@ Node *grabLeft(Node *theNode){
     }
 
     else{
+        printf("grabbing left of middle node\n");
         leftNode = createMidNode(theNode->degree);
         leftNode->myTree = theNode->myTree;
 
         int n = theNode->numberOfKeys;
+        printf("grabbing %d elements for left\n", (int)(floor(n/2)));
 
-        memmove(&leftNode->keys[0], &theNode->keys[0], (floor(n/2) - 1) * sizeof(void *));
+        memmove(&leftNode->keys[0], &theNode->keys[0], (floor(n/2)) * sizeof(void *));
 
         memmove(&leftNode->children[0], &theNode->children[0], (floor(n / 2) + 1) * sizeof(Node *));
+        leftNode->numberOfKeys = floor (n/2);
     }
 
     return leftNode;
@@ -126,28 +142,33 @@ Node *grabRight(Node *theNode){
         int middle = (floor(n/2));
 
         //copy keys over
-        memmove(&rightNode->keys[(int)(floor(n / 2))], &theNode->keys[middle], ((n - (floor(n/2))) * sizeof(void *)));
+        memmove(&rightNode->keys[0], &theNode->keys[middle], ((n - (floor(n/2))) * sizeof(void *)));
 
         //copy datas over
-        memmove(&rightNode->data[(int)(floor(n / 2))], &theNode->data[middle], ((n - middle) * sizeof(void *)));
+        memmove(&rightNode->data[0], &theNode->data[middle], ((n - middle) * sizeof(void *)));
         rightNode->numberOfKeys = (n - floor(n/2));
     }
 
     else{
         printf("grabbing right of middle\n");
 
-        Node *rightNode = createMidNode(theNode->degree);
+        rightNode = createMidNode(theNode->degree);
         rightNode->myTree = theNode->myTree;
         int n = theNode->numberOfKeys;
         int middle = floor(n/2);
 
-        printf("n = %d ", n);
+        printf("node being split has = %d keys\n", n);
+        printf("grabbing %d elements for right keys\n", n - (int)(floor(n/2) + 1) );
+        printf("keys start from pos %d\n", middle + 1);
+        printf("first key is %d\n", (* (int *) theNode->keys[middle + 1]));
+        
+        //used to be &rightNode->keys[(int)(floor (n/2) + 1)]
+        memmove(&rightNode->keys[0], &theNode->keys[middle + 1], ((n - (middle + 1)) * sizeof(void *)));
 
-        memmove(&rightNode->keys[(int)(floor (n/2) + 1)], &theNode[middle + 1], ((n - (middle + 1)) * sizeof(void *)));
+        memmove(&rightNode->children[0], &theNode->children[middle + 1], (n - floor(n / 2)) * sizeof(void *));
 
-        memmove(&rightNode->children[(int)(floor (n/2) + 1)], &theNode[middle + 1], (n - floor(n / 2)) * sizeof(void *));
-
-
+        rightNode->numberOfKeys = (int)(floor(n/2));
+        printMiddle(rightNode);
 
     }
     return rightNode;

@@ -66,6 +66,7 @@ Node *insert(Node *root, void *key, void *data){
 
     //if root is not leaf - go to leaf
     if(root->leaf == false){
+        printf("going to leaf...\n");
         root = findLeaf(root, key);
     }
 
@@ -80,22 +81,25 @@ Node *insert(Node *root, void *key, void *data){
 }
 
 Node * insertToLeaf(Node *theLeaf, void *key, void *data){
-    int pos = sortedArrayPos(key, theLeaf->keys, theLeaf->myTree->compare);
+    printf("inserting %d to leaf\n", (*(int *)key));
+    int pos = sortedArrayPos(key, theLeaf->keys, theLeaf->numberOfKeys, theLeaf->myTree->compare);
+    printf(" at %d pos in array\n", pos);
     insertAtPos(data, theLeaf->data, pos, (theLeaf->numberOfKeys));
     insertAtPos(key, theLeaf->keys, pos, (theLeaf->numberOfKeys));
 
     theLeaf->numberOfKeys++;
     printf("leaf now has %d\n", theLeaf->numberOfKeys);
     printf("leaf degree is %d\n", theLeaf->degree);
+    printLeaf(theLeaf);
     return theLeaf;
 }
 
 
 
 Node *insertToMiddle(Node *theMiddle, void *key, Node *leftChild, Node *rightChild){
-    printf("inserting to middle\n");
+    printf("inserting %d to middle\n", (*(int *)key)); //temp
 
-    int pos = sortedArrayPos(key, theMiddle->keys, theMiddle->myTree->compare);
+    int pos = sortedArrayPos(key, theMiddle->keys, theMiddle->numberOfKeys, theMiddle->myTree->compare);
     printf("break 1\n");
     insertAtPos(key, theMiddle->keys, pos, (theMiddle->numberOfKeys - 1)); 
     printf("break 2\n");
@@ -106,6 +110,8 @@ Node *insertToMiddle(Node *theMiddle, void *key, Node *leftChild, Node *rightChi
     printf("break 4\n");
 
     theMiddle->numberOfKeys +=1;
+    printf("middle insertion done\n");
+    printMiddle(theMiddle);
     return theMiddle;
 }
 
@@ -114,16 +120,20 @@ Node *insertAbove(Node *theNode, void *key, Node *leftChild, Node *rightChild){
     Node *upperNode;
     //if node is already root - must create parent
     if(theNode->parent == NULL){
+        printf("no parent\n");
         upperNode = createMidNode(theNode->degree);
         upperNode->myTree = theNode->myTree;
     }
     else{
         upperNode = theNode->parent;
     }
-
     //at this point upperNode should definitely exist
+    if ((leftChild == NULL) || (rightChild == NULL)){
+        printf("problem\n");
+    }
     leftChild->parent = upperNode;
     rightChild->parent = upperNode;
+    printf("parents assigned\n");
     insertToMiddle(upperNode, key, leftChild, rightChild);
 
     return upperNode;
@@ -133,7 +143,7 @@ Node *insertAbove(Node *theNode, void *key, Node *leftChild, Node *rightChild){
 //splits node and calls insertAbove to add keys/children to parent node
 Node *splitNode(Node *theNode){
     
-    printf("splitting node\n");
+    printf("splitting node... middle is %d\n", (*(int *)(grabMiddle(theNode))));
     Node *newRoot = insertAbove(theNode, grabMiddle(theNode), grabLeft(theNode), grabRight(theNode));
     
     return newRoot;
@@ -146,7 +156,7 @@ Node *findLeaf(Node *root, void *key){
         return root;
     }
     else{
-        int pos = sortedArrayPos(key, root->keys, root->myTree->compare);
+        int pos = sortedArrayPos(key, root->keys, root->numberOfKeys, root->myTree->compare);
         root = findLeaf(root->children[pos], key);
     }
 }

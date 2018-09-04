@@ -12,7 +12,7 @@
 //finds position in array sorted least to greatest
 //returns int index
 
-int sortedArrayPos(void *data, void *array[], int (*compare)(void *data1, void *data2));
+int sortedArrayPos(void *data, void *array[], int arraySize, int (*compare)(void *data1, void *data2));
 
 // inserts element at index int - shifts existing element rightwards
 // arrayCapacity is number of elements - not total capacity

@@ -45,9 +45,10 @@ void *czPt = &cz;
 void *caPt = &ca;
 void *cbPt = &cb;
 
-void *testArray[4] = {xPt, yPt, zPt};
+void *testArray[4] = {xPt, zPt};
 
-BTree *testTree = createBTree(3, compareChar, destroyChar, printChar);
+
+BTree *testTree = createBTree(3, compareInt, destroyChar, printChar);
 
 Node *root = createleafNode(3);
 root->myTree = testTree;
@@ -59,50 +60,32 @@ insert(root, xPt, cxPt);
 
 //inserting 5 and 'b'
 printf("inserting 5 and b\n");
-//insertToLeaf(root, yPt, cyPt);
 insert(root, yPt, cyPt);
 
 //inserting 3 and 'c'
 printf("inserting 3 and c\n");
-//insertToLeaf(root, zPt, czPt);
 Node *newRoot = insert(root, zPt, czPt);
 
 printUpdate("printing middle");
 printf("leaf d %d\n", root->numberOfKeys);
-//printLeaf(root);
 printMiddle(newRoot);
-
-/*
-printUpdate("node is splitting");
-Node *newRoot = splitNode(root);
 printLeaf(newRoot->children[0]);
-printf("other child\n");
 printLeaf(newRoot->children[1]);
-*/
 
-printUpdate("split complete");
-/*
 printf("inserting 4 and e\n");
-Node *located = findLeaf(newRoot, aPt);
-printLeaf(located);
-insertToLeaf(located, aPt, caPt);
+newRoot = insert(newRoot, aPt, caPt);
 
 printf("middle after 4 and e\n");
 printMiddle(newRoot);
 
-*/
 
-/*
+
 printUpdate(" inserting 8 and f");
 
 Node *loc8 = findLeaf(newRoot, bPt);
-printf("leaf for 8 and f located\n");
-printLeaf(loc8);
 
 printf("inserting 8 and f to leaf\n");
-insertToLeaf(loc8, bPt, cbPt);
-*/
-
+newRoot = insert(loc8, bPt, cbPt);
 
 
 
