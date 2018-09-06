@@ -21,10 +21,13 @@ void printInt(void *data);
 
 void *copyInt(void *data);
 
+void *makeIntPtrsVoid(int array[], void *voidArray[], int arraySize);
 
 
 int compareChar(void *data1, void *data2);
 void destroyChar(void *data);
 void printChar(void *data);
+
+void *makeCharPtrsVoid(char array[], void *voidArray[], int arraySize);
 
 #endif

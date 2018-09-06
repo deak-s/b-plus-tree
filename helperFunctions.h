@@ -11,7 +11,11 @@
 
 //finds position in array sorted least to greatest
 //returns int index
-
+/**
+ * @brief finds position where data should be inserted, in array sorted from least to greatest
+ *
+ *
+ */
 int sortedArrayPos(void *data, void *array[], int arraySize, int (*compare)(void *data1, void *data2));
 
 // inserts element at index int - shifts existing element rightwards
@@ -20,6 +24,10 @@ void insertAtPos(void *element, void *array[], int pos, int numberOfElements);
 
 // inserts node at index int - shifts existing elements rightwards
 void insertNodeAtPos(Node *element, Node *array[], int pos, int numberOfElements);
+
+//inserts node at index int - deletes existing element
+void overwriteNodeAtPos(Node *element, Node *array[], int pos);
+
 
 void printLeaf(Node *theLeaf);
 

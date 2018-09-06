@@ -61,6 +61,7 @@ Node *createMidNode(int degree);
  * @param[in] compare  function to compare data type contained in tree
  * @param[in] destroy   function to destroy the datatype contained in tree
  * @param[in] print     function to print datatype contained in tree
+ * @return    BTree     pointer to newly created b+ tree struct
  */
 BTree *createBTree(int degree, 
                    int (*compare)(void *data1, void *data2),
@@ -71,22 +72,48 @@ BTree *createBTree(int degree,
  * @param[out] root  Node pointer of root to insert to
  * @param[in]  key   void pointer of key to insert
  * @param[in]  data  void pointer of data to insert
+ * @return     Node pointer of last node inserted to
  */
 Node *insert(Node *root, void *key, void *data);
 
-/* inserts a key/data pair to a leaf node
- * @param theLeaf leafNode pointer to node to insert to
- * @param key void ptr to key to insert
- * @param data void ptr to data to insert
+/**
+ * @brief inserts a key/data pair to a leaf node
+ * @param[out] theLeaf leafNode pointer to node to insert to
+ * @param[in] key void ptr to key to insert
+ * @param[in] data void ptr to data to insert
  * @return leafNode ptr of leafNode with key and data inserted
- **/
+ */
 Node * insertToLeaf(Node *theLeaf, void *key, void *data);
 
+/**
+ * @brief inserts a key and two node pointers to a middle node
+ * @param[out]  theMiddle   Node pointer to node to insert to
+ * @param[in]   key         void pointer to key to insert
+ * @param[in]   leftChild   Node pointer for node with data < key
+ * @param[in]   rightChild  Node poitner for node with data >= key
+ * @return      Node poitner to middle node after insertions
+ */
 Node *insertToMiddle(Node *theMiddle, void *key, Node *leftChild, Node *rightChild);
 
+/**
+ * @brief inserts key and pointers to the parent node, creates one if node is root
+ * @param[in]   theNode    Node poitner to node to insert to parent of
+ * @param [in]  key        void poitner to key to insert to parent
+ * @param[in]   leftChild  Node pointer for node with data < key
+ * @param[in]   rightChild Node pointer for node with data >= key
+ * @return      Node pointer to parent node where insertion occured
+ */
 Node *insertAbove(Node *theNode, void *key, Node *leftChild, Node *rightChild);
-//return pointer to new root node
+
+
+//just a wrapper for insertAbove() 
 Node *splitNode(Node *theNode);
 
+/**
+ * @brief finds leaf where key should be inserted, uses the tree's compare function
+ * @param[in]   root   Node pointer to root to begin search at
+ * @param[in]   key    void pointer to key to find leaf for
+ * @return      Node pointer to leaf where key should be inserted
+ */
 Node *findLeaf(Node *root, void *key);
 #endif

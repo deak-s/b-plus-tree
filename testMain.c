@@ -87,7 +87,31 @@ Node *loc8 = findLeaf(newRoot, bPt);
 printf("inserting 8 and f to leaf\n");
 newRoot = insert(loc8, bPt, cbPt);
 
+printMiddle(newRoot->children[0]);
+printMiddle(newRoot->children[1]);
+
+printLeaf(newRoot->children[0]->children[0]);
+printLeaf(newRoot->children[0]->children[1]);
+printLeaf(newRoot->children[1]->children[0]);
+printLeaf(newRoot->children[1]->children[1]);
+
+int c = 6;
+void *cPt = &c;
+char cc = 'g';
+void *ccPt = &cc;
 
 
+
+//good up until here - issue w insert at pos
+/*
+printUpdate("inserting 6 and g");
+newRoot = insert(newRoot, cPt, ccPt);
+
+printf("actual root\n");
+printMiddle(newRoot);
+
+printf("right child\n");
+printMiddle(newRoot->children[0]);
+*/
 return 0;
 }

@@ -56,6 +56,13 @@ void *copyInt(void *data){
     return xPt;
 }
 
+void *makeIntPtrsVoid(int array[], void *voidArray[], int arraySize){
+    for(int x = 0; x < arraySize; x++){
+        voidArray[x] = &array[x];
+    }
+    return voidArray;
+}
+
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~ char functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 int compareChar(void *data1, void *data2){ 
@@ -82,3 +89,11 @@ void destroyChar(void *data){
 void printChar(void *data){
     printf("char: %c\n", (*(char *)data));
 }
+
+void *makeCharPtrsVoid(char array[], void *voidArray[], int arraySize){
+    for(int x = 0; x < arraySize; x++){
+        voidArray[x] = &array[x];
+    }
+    return voidArray;
+}
+

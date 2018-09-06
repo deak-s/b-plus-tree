@@ -100,18 +100,17 @@ Node *insertToMiddle(Node *theMiddle, void *key, Node *leftChild, Node *rightChi
     printf("inserting %d to middle\n", (*(int *)key)); //temp
 
     int pos = sortedArrayPos(key, theMiddle->keys, theMiddle->numberOfKeys, theMiddle->myTree->compare);
-    printf("break 1\n");
     insertAtPos(key, theMiddle->keys, pos, (theMiddle->numberOfKeys - 1)); 
-    printf("break 2\n");
 
-    insertNodeAtPos(leftChild, theMiddle->children, pos, theMiddle->numberOfKeys);
-    printf("break 3\n");
-    insertNodeAtPos(rightChild, theMiddle->children, (pos+1), theMiddle->numberOfKeys);
-    printf("break 4\n");
+//    insertNodeAtPos(leftChild, theMiddle->children, pos, theMiddle->numberOfKeys);
+  //  insertNodeAtPos(rightChild, theMiddle->children, (pos+1), theMiddle->numberOfKeys);
+    overwriteNodeAtPos(leftChild, theMiddle->children, pos);
+    overwriteNodeAtPos(rightChild, theMiddle->children, pos + 1);
 
     theMiddle->numberOfKeys +=1;
-    printf("middle insertion done\n");
+    printf("printing middle\n");
     printMiddle(theMiddle);
+    printf("middle print over\n");
     return theMiddle;
 }
 

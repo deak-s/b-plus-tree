@@ -74,7 +74,12 @@ void insertNodeAtPos(Node *element, Node *array[], int pos, int numberOfElements
     return;
 }
 
+void overwriteNodeAtPos(Node *element, Node *array[], int pos){
+    destroyNode(array[pos]);
 
+    array[pos] = element;
+    return;
+}
 
 
 void printLeaf(Node *theLeaf){
@@ -181,13 +186,16 @@ void *grabMiddle(Node *theNode){
 }
 
 void destroyNode(Node *theNode){
-    free(theNode->keys);
+    if(theNode != NULL){
 
-    if(theNode->leaf){
-        free(theNode->data);
-    }    
-    else{
-        free(theNode->children);
+        free(theNode->keys);
+
+        if(theNode->leaf){
+            free(theNode->data);
+        }    
+        else{
+            free(theNode->children);
+        }
     }
 }
 
